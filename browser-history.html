@@ -1,0 +1,259 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>历史记录 - Microsoft Edge</title>
+  <style>
+    :root {
+      --line: #dce3ee;
+      --text: #182033;
+      --muted: #687386;
+      font-family: "Segoe UI Variable", "Segoe UI", "Microsoft YaHei", system-ui, sans-serif;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html,
+    body {
+      width: 100%;
+      height: 100%;
+      margin: 0;
+      color: var(--text);
+      background:
+        radial-gradient(circle at 24% 28%, rgba(36, 172, 238, .22), transparent 30%),
+        linear-gradient(135deg, #edf5fb, #f8fbff);
+    }
+
+    .shell {
+      width: min(1060px, calc(100vw - 36px));
+      min-height: min(760px, calc(100vh - 36px));
+      margin: 18px auto;
+      overflow: hidden;
+      border: 1px solid rgba(255, 255, 255, .76);
+      border-radius: 8px;
+      background: rgba(247, 250, 255, .9);
+      box-shadow: 0 30px 90px rgba(31, 44, 80, .22);
+      backdrop-filter: blur(24px) saturate(150%);
+    }
+
+    .top {
+      height: 56px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 22px;
+      border-bottom: 1px solid var(--line);
+      background: rgba(255, 255, 255, .72);
+    }
+
+    .title {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-size: 20px;
+      font-weight: 600;
+    }
+
+    .edge-dot {
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      background:
+        radial-gradient(circle at 55% 62%, #fff 0 13%, transparent 14%),
+        conic-gradient(from 160deg, #17d5a8, #22b5f5, #2964d9, #21b5ef, #17d5a8);
+    }
+
+    .back {
+      padding: 8px 13px;
+      border-radius: 6px;
+      background: #eef3f8;
+      color: #1d4ed8;
+      text-decoration: none;
+      font-size: 13px;
+    }
+
+    .content {
+      display: grid;
+      grid-template-columns: 220px 1fr;
+      min-height: 640px;
+    }
+
+    .side {
+      padding: 18px 12px;
+      border-right: 1px solid var(--line);
+      background: rgba(245, 248, 253, .72);
+    }
+
+    .side-item {
+      height: 36px;
+      display: flex;
+      align-items: center;
+      padding: 0 12px;
+      border-radius: 6px;
+      color: #435166;
+      font-size: 13px;
+    }
+
+    .side-item.active {
+      background: rgba(37, 99, 235, .12);
+      color: #1d4ed8;
+    }
+
+    .main {
+      padding: 24px;
+    }
+
+    .search {
+      height: 38px;
+      display: flex;
+      align-items: center;
+      margin-bottom: 20px;
+      padding: 0 13px;
+      border: 1px solid #d7dfeb;
+      border-radius: 6px;
+      background: white;
+      color: #8390a2;
+      font-size: 13px;
+    }
+
+    .day {
+      margin-bottom: 22px;
+    }
+
+    .day h2 {
+      margin: 0 0 10px;
+      font-size: 15px;
+      font-weight: 600;
+      color: #334155;
+    }
+
+    .record {
+      display: grid;
+      grid-template-columns: 36px 1fr auto;
+      gap: 12px;
+      align-items: center;
+      min-height: 58px;
+      padding: 9px 12px;
+      border: 1px solid rgba(224, 231, 241, .94);
+      border-radius: 7px;
+      background: rgba(255, 255, 255, .78);
+      box-shadow: 0 8px 20px rgba(31, 44, 80, .05);
+      margin-bottom: 8px;
+    }
+
+    .favicon {
+      width: 32px;
+      height: 32px;
+      display: grid;
+      place-items: center;
+      border-radius: 7px;
+      background: linear-gradient(135deg, #60a5fa, #2563eb);
+      color: white;
+      font-size: 13px;
+      font-weight: 700;
+    }
+
+    .name {
+      font-size: 14px;
+      margin-bottom: 3px;
+    }
+
+    .url {
+      color: var(--muted);
+      font-size: 12px;
+    }
+
+    .time {
+      color: var(--muted);
+      font-size: 12px;
+    }
+
+    .note {
+      margin-top: 18px;
+      padding: 14px 16px;
+      border: 1px dashed #b8c4d6;
+      border-radius: 8px;
+      background: rgba(255, 255, 255, .68);
+      color: #5f6b7d;
+      font-size: 13px;
+      line-height: 1.8;
+    }
+
+    @media (max-width: 760px) {
+      .shell {
+        width: 100vw;
+        min-height: 100vh;
+        margin: 0;
+        border-radius: 0;
+      }
+
+      .content {
+        grid-template-columns: 1fr;
+      }
+
+      .side {
+        display: none;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main class="shell" aria-label="Edge history">
+    <header class="top">
+      <div class="title"><span class="edge-dot"></span>历史记录</div>
+      <a class="back" href="edge-browser.html">返回 Edge</a>
+    </header>
+
+    <section class="content">
+      <aside class="side">
+        <div class="side-item active">所有历史记录</div>
+        <div class="side-item">最近关闭</div>
+        <div class="side-item">来自其他设备</div>
+      </aside>
+
+      <section class="main">
+        <div class="search">⌕ 搜索历史记录</div>
+
+        <div class="day">
+          <h2>今天</h2>
+          <div class="record">
+            <div class="favicon">填</div>
+            <div>
+              <div class="name">这里填写历史记录标题</div>
+              <div class="url">这里填写网址或页面文件，例如 page.html</div>
+            </div>
+            <div class="time">11:30</div>
+          </div>
+          <div class="record">
+            <div class="favicon">填</div>
+            <div>
+              <div class="name">这里填写第二条历史记录</div>
+              <div class="url">这里填写访问来源或关键词</div>
+            </div>
+            <div class="time">10:12</div>
+          </div>
+        </div>
+
+        <div class="day">
+          <h2>昨天</h2>
+          <div class="record">
+            <div class="favicon">填</div>
+            <div>
+              <div class="name">这里填写昨天访问的页面</div>
+              <div class="url">这里填写对应地址</div>
+            </div>
+            <div class="time">18:40</div>
+          </div>
+        </div>
+
+        <div class="note">
+          这个页面是固定的浏览器历史记录页。要改内容，就在本文件里搜索“这里填写”，替换标题、网址和时间即可。
+        </div>
+      </section>
+    </section>
+  </main>
+</body>
+</html>

@@ -1,0 +1,306 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>6/19</title>
+  <style>
+    :root {
+      --line: #dce3ee;
+      --text: #1f2937;
+      --muted: #687386;
+      --blue: #2563eb;
+      font-family: "Segoe UI Variable", "Segoe UI", "Microsoft YaHei", system-ui, sans-serif;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html,
+    body {
+      width: 100%;
+      height: 100%;
+      margin: 0;
+      overflow: hidden;
+      color: var(--text);
+      background:
+        radial-gradient(circle at 24% 26%, rgba(37, 99, 235, .2), transparent 30%),
+        linear-gradient(135deg, #e7eef7, #f8fafc);
+    }
+
+    .window {
+      width: min(980px, calc(100vw - 36px));
+      height: min(680px, calc(100vh - 36px));
+      margin: 18px auto;
+      display: grid;
+      grid-template-rows: 38px 52px 1fr;
+      overflow: hidden;
+      border: 1px solid rgba(255, 255, 255, .72);
+      border-radius: 8px;
+      background: rgba(248, 250, 255, .9);
+      box-shadow: 0 28px 80px rgba(31, 44, 80, .22);
+      backdrop-filter: blur(24px) saturate(150%);
+    }
+
+    .titlebar,
+    .bar {
+      display: flex;
+      align-items: center;
+      border-bottom: 1px solid var(--line);
+      background: rgba(255, 255, 255, .72);
+    }
+
+    .titlebar {
+      gap: 10px;
+      padding: 0 12px;
+      font-size: 13px;
+    }
+
+    .bar {
+      gap: 12px;
+      padding: 9px 14px;
+    }
+
+    .folder {
+      position: relative;
+      width: 22px;
+      height: 16px;
+      border-radius: 3px;
+      background: linear-gradient(#ffda71, #e7aa24);
+    }
+
+    .folder::before {
+      content: "";
+      position: absolute;
+      left: 2px;
+      top: -5px;
+      width: 12px;
+      height: 7px;
+      border-radius: 3px 3px 0 0;
+      background: #ffd56a;
+    }
+
+    .btn {
+      width: 32px;
+      height: 32px;
+      display: grid;
+      place-items: center;
+      border-radius: 5px;
+      color: #445166;
+      text-decoration: none;
+    }
+
+    .btn:hover {
+      background: #edf2f7;
+    }
+
+    .address {
+      flex: 1;
+      height: 32px;
+      display: flex;
+      align-items: center;
+      padding: 0 12px;
+      border: 1px solid #d7dfeb;
+      border-radius: 5px;
+      background: white;
+      color: #435166;
+      font-size: 13px;
+    }
+
+    .content {
+      min-height: 0;
+      overflow: auto;
+      padding: 28px;
+    }
+
+    .lock-panel {
+      max-width: 430px;
+      margin: 78px auto 0;
+      padding: 28px;
+      border: 1px solid rgba(213, 222, 235, .94);
+      border-radius: 8px;
+      background: rgba(255, 255, 255, .78);
+      box-shadow: 0 18px 42px rgba(31, 44, 80, .1);
+      text-align: center;
+    }
+
+    .lock-icon {
+      width: 58px;
+      height: 50px;
+      margin: 0 auto 18px;
+      position: relative;
+      border-radius: 8px;
+      background: linear-gradient(135deg, #60a5fa, #2563eb);
+    }
+
+    .lock-icon::before {
+      content: "";
+      position: absolute;
+      left: 16px;
+      top: -18px;
+      width: 26px;
+      height: 24px;
+      border: 6px solid #2563eb;
+      border-bottom: 0;
+      border-radius: 22px 22px 0 0;
+    }
+
+    h1 {
+      margin: 0 0 10px;
+      font-size: 22px;
+      font-weight: 600;
+    }
+
+    p {
+      margin: 0 0 18px;
+      color: var(--muted);
+      line-height: 1.7;
+      font-size: 13px;
+    }
+
+    form {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 10px;
+    }
+
+    input {
+      height: 38px;
+      min-width: 0;
+      padding: 0 12px;
+      border: 1px solid #cfd8e6;
+      border-radius: 6px;
+      outline: 0;
+      font: inherit;
+    }
+
+    button {
+      height: 38px;
+      padding: 0 16px;
+      border: 0;
+      border-radius: 6px;
+      background: var(--blue);
+      color: white;
+      font: inherit;
+      cursor: pointer;
+    }
+
+    .error {
+      min-height: 20px;
+      margin-top: 12px;
+      color: #b91c1c;
+      font-size: 13px;
+    }
+
+    .files {
+      display: none;
+    }
+
+    .files.open {
+      display: block;
+    }
+
+    .file-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(150px, 1fr));
+      gap: 14px;
+    }
+
+    .file {
+      min-height: 108px;
+      padding: 14px;
+      border: 1px solid rgba(213, 222, 235, .92);
+      border-radius: 7px;
+      background: rgba(255, 255, 255, .76);
+      box-shadow: 0 10px 24px rgba(31, 44, 80, .06);
+    }
+
+    .file-icon {
+      width: 36px;
+      height: 42px;
+      margin-bottom: 12px;
+      border: 1px solid #cbd5e1;
+      border-radius: 5px;
+      background: linear-gradient(135deg, #fff, #dbeafe);
+    }
+
+    .name {
+      font-size: 13px;
+      margin-bottom: 5px;
+    }
+
+    .meta {
+      color: var(--muted);
+      font-size: 12px;
+    }
+  </style>
+</head>
+<body>
+  <main class="window" aria-label="Encrypted 6/19 folder">
+    <section class="titlebar"><span class="folder"></span><span>6/19 - 文件资源管理器</span></section>
+    <section class="bar">
+      <a class="btn" href="win11-desktop.html" aria-label="Back">‹</a>
+      <span class="btn">›</span>
+      <span class="btn">↻</span>
+      <div class="address">桌面 › 6/19</div>
+    </section>
+
+    <section class="content">
+      <div class="lock-panel" id="lockPanel">
+        <div class="lock-icon"></div>
+        <h1>文件夹已加密</h1>
+        <p>请输入密码以查看 6/19 文件夹内容。</p>
+        <form id="passwordForm">
+          <input id="passwordInput" type="password" placeholder="输入密码" autocomplete="off">
+          <button type="submit">解锁</button>
+        </form>
+        <div class="error" id="errorText"></div>
+      </div>
+
+      <div class="files" id="files">
+        <h1>6/19</h1>
+        <p>已解锁。这里的文件名和内容可以继续替换。</p>
+        <div class="file-grid">
+          <div class="file">
+            <div class="file-icon"></div>
+            <div class="name">这里填写文件名.txt</div>
+            <div class="meta">文本文件</div>
+          </div>
+          <div class="file">
+            <div class="file-icon"></div>
+            <div class="name">这里填写图片名.png</div>
+            <div class="meta">图片</div>
+          </div>
+          <div class="file">
+            <div class="file-icon"></div>
+            <div class="name">这里填写文档名.docx</div>
+            <div class="meta">Word 文档</div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <script>
+    const folderPassword = "619";
+    const passwordForm = document.getElementById("passwordForm");
+    const passwordInput = document.getElementById("passwordInput");
+    const lockPanel = document.getElementById("lockPanel");
+    const files = document.getElementById("files");
+    const errorText = document.getElementById("errorText");
+
+    passwordForm.addEventListener("submit", (event) => {
+      event.preventDefault();
+      if (passwordInput.value === folderPassword) {
+        lockPanel.style.display = "none";
+        files.classList.add("open");
+        return;
+      }
+
+      errorText.textContent = "密码错误";
+      passwordInput.select();
+    });
+  </script>
+</body>
+</html>

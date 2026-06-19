@@ -1,0 +1,302 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>下载</title>
+  <style>
+    :root {
+      --line: #dce3ee;
+      --text: #1f2937;
+      --muted: #687386;
+      font-family: "Segoe UI Variable", "Segoe UI", "Microsoft YaHei", system-ui, sans-serif;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html,
+    body {
+      width: 100%;
+      height: 100%;
+      margin: 0;
+      overflow: hidden;
+      color: var(--text);
+      background:
+        radial-gradient(circle at 28% 24%, rgba(96, 165, 250, .22), transparent 30%),
+        linear-gradient(135deg, #e7eef7, #f7fafc);
+    }
+
+    .explorer {
+      width: min(1040px, calc(100vw - 36px));
+      height: min(700px, calc(100vh - 36px));
+      margin: 18px auto;
+      display: grid;
+      grid-template-rows: 38px 52px 1fr;
+      overflow: hidden;
+      border: 1px solid rgba(255, 255, 255, .72);
+      border-radius: 8px;
+      background: rgba(248, 250, 255, .88);
+      box-shadow: 0 28px 80px rgba(31, 44, 80, .22);
+      backdrop-filter: blur(24px) saturate(150%);
+    }
+
+    .titlebar {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 0 12px;
+      border-bottom: 1px solid var(--line);
+      background: rgba(255, 255, 255, .66);
+      font-size: 13px;
+    }
+
+    .folder-icon {
+      width: 20px;
+      height: 15px;
+      position: relative;
+      border-radius: 3px;
+      background: linear-gradient(#ffda71, #e7aa24);
+    }
+
+    .folder-icon::before {
+      content: "";
+      position: absolute;
+      left: 2px;
+      top: -5px;
+      width: 11px;
+      height: 7px;
+      border-radius: 3px 3px 0 0;
+      background: #ffd56a;
+    }
+
+    .bar {
+      display: grid;
+      grid-template-columns: auto 1fr auto;
+      gap: 12px;
+      align-items: center;
+      padding: 9px 14px;
+      border-bottom: 1px solid var(--line);
+      background: rgba(255, 255, 255, .72);
+    }
+
+    .nav {
+      display: flex;
+      gap: 5px;
+    }
+
+    .btn {
+      width: 32px;
+      height: 32px;
+      display: grid;
+      place-items: center;
+      border-radius: 5px;
+      color: #445166;
+      text-decoration: none;
+    }
+
+    .btn:hover {
+      background: #edf2f7;
+    }
+
+    .address {
+      height: 32px;
+      display: flex;
+      align-items: center;
+      padding: 0 12px;
+      border: 1px solid #d7dfeb;
+      border-radius: 5px;
+      background: white;
+      color: #435166;
+      font-size: 13px;
+    }
+
+    .search {
+      height: 32px;
+      min-width: 170px;
+      display: flex;
+      align-items: center;
+      padding: 0 12px;
+      border: 1px solid #d7dfeb;
+      border-radius: 5px;
+      background: white;
+      color: #8390a2;
+      font-size: 13px;
+    }
+
+    .body {
+      display: grid;
+      grid-template-columns: 210px 1fr;
+      min-height: 0;
+    }
+
+    .side {
+      padding: 14px 10px;
+      border-right: 1px solid var(--line);
+      background: rgba(245, 248, 253, .74);
+    }
+
+    .side-item {
+      height: 34px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 0 12px;
+      border-radius: 5px;
+      color: #343b4a;
+      font-size: 13px;
+      text-decoration: none;
+    }
+
+    .side-item.active {
+      background: rgba(37, 99, 235, .13);
+      color: #1d4ed8;
+    }
+
+    .dot {
+      width: 16px;
+      height: 16px;
+      border-radius: 4px;
+      background: linear-gradient(135deg, #60a5fa, #1d4ed8);
+    }
+
+    .content {
+      min-height: 0;
+      overflow: auto;
+      padding: 20px;
+    }
+
+    .heading {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 16px;
+    }
+
+    .heading h1 {
+      margin: 0;
+      font-size: 22px;
+      font-weight: 600;
+    }
+
+    .hint {
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .files {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(150px, 1fr));
+      gap: 14px;
+    }
+
+    .file {
+      min-height: 112px;
+      padding: 14px;
+      border: 1px solid rgba(213, 222, 235, .92);
+      border-radius: 7px;
+      background: rgba(255, 255, 255, .76);
+      box-shadow: 0 10px 24px rgba(31, 44, 80, .06);
+    }
+
+    .file:hover {
+      border-color: rgba(37, 99, 235, .35);
+      background: white;
+    }
+
+    .file-icon {
+      width: 36px;
+      height: 42px;
+      margin-bottom: 12px;
+      border: 1px solid #cbd5e1;
+      border-radius: 5px;
+      background: linear-gradient(135deg, #fff, #dbeafe);
+    }
+
+    .name {
+      font-size: 13px;
+      margin-bottom: 5px;
+    }
+
+    .meta {
+      color: var(--muted);
+      font-size: 12px;
+    }
+
+    @media (max-width: 760px) {
+      .explorer {
+        width: 100vw;
+        height: 100vh;
+        margin: 0;
+        border-radius: 0;
+      }
+
+      .body {
+        grid-template-columns: 1fr;
+      }
+
+      .side {
+        display: none;
+      }
+
+      .files {
+        grid-template-columns: 1fr 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main class="explorer" aria-label="Downloads folder">
+    <section class="titlebar">
+      <span class="folder-icon"></span>
+      <span>下载 - 文件资源管理器</span>
+    </section>
+
+    <section class="bar">
+      <div class="nav">
+        <a class="btn" href="win11-desktop.html" aria-label="Back">‹</a>
+        <span class="btn">›</span>
+        <span class="btn">↻</span>
+      </div>
+      <div class="address">此电脑 › 下载</div>
+      <div class="search">搜索 下载</div>
+    </section>
+
+    <section class="body">
+      <nav class="side" aria-label="Folders">
+        <a class="side-item" href="win11-desktop.html"><span class="dot"></span>主页</a>
+        <div class="side-item"><span class="dot"></span>桌面</div>
+        <div class="side-item active"><span class="dot"></span>下载</div>
+        <a class="side-item" href="documents.html"><span class="dot"></span>文档</a>
+        <a class="side-item" href="pictures.html"><span class="dot"></span>图片</a>
+      </nav>
+
+      <section class="content">
+        <div class="heading">
+          <h1>下载</h1>
+          <div class="hint">3 个项目</div>
+        </div>
+
+        <div class="files">
+          <div class="file">
+            <div class="file-icon"></div>
+            <div class="name">实验报告模板.docx</div>
+            <div class="meta">Word 文档 · 今天</div>
+          </div>
+          <div class="file">
+            <div class="file-icon"></div>
+            <div class="name">EdgeSetup.exe</div>
+            <div class="meta">应用程序 · 昨天</div>
+          </div>
+          <div class="file">
+            <div class="file-icon"></div>
+            <div class="name">秦皇岛行程.png</div>
+            <div class="meta">图片 · 6月16日</div>
+          </div>
+        </div>
+      </section>
+    </section>
+  </main>
+</body>
+</html>

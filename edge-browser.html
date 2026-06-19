@@ -1,0 +1,539 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Microsoft Edge</title>
+  <style>
+    :root {
+      --line: #dce3ee;
+      --text: #182033;
+      --muted: #687386;
+      --blue: #2563eb;
+      --green: #13b981;
+      font-family: "Segoe UI Variable", "Segoe UI", "Microsoft YaHei", system-ui, sans-serif;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html,
+    body {
+      width: 100%;
+      height: 100%;
+      margin: 0;
+      overflow: hidden;
+      color: var(--text);
+      background:
+        radial-gradient(circle at 24% 28%, rgba(36, 172, 238, .28), transparent 30%),
+        radial-gradient(circle at 78% 20%, rgba(19, 185, 129, .18), transparent 26%),
+        linear-gradient(135deg, #edf5fb, #dfeaf6 52%, #eef5f7);
+    }
+
+    input,
+    button {
+      font: inherit;
+    }
+
+    input {
+      min-width: 0;
+      border: 0;
+      outline: 0;
+      background: transparent;
+      color: inherit;
+    }
+
+    .browser {
+      width: min(1220px, calc(100vw - 34px));
+      height: min(790px, calc(100vh - 34px));
+      margin: 17px auto;
+      display: grid;
+      grid-template-rows: 42px 52px 1fr;
+      overflow: hidden;
+      border: 1px solid rgba(255, 255, 255, .72);
+      border-radius: 8px;
+      background: rgba(247, 250, 255, .88);
+      box-shadow: 0 30px 90px rgba(31, 44, 80, .25);
+      backdrop-filter: blur(24px) saturate(150%);
+    }
+
+    .tabs {
+      display: flex;
+      align-items: end;
+      gap: 6px;
+      padding: 7px 12px 0;
+      background: rgba(237, 242, 249, .88);
+      border-bottom: 1px solid var(--line);
+    }
+
+    .tab {
+      width: 210px;
+      height: 35px;
+      display: flex;
+      align-items: center;
+      gap: 9px;
+      padding: 0 12px;
+      border-radius: 7px 7px 0 0;
+      background: white;
+      box-shadow: 0 -1px 0 rgba(255, 255, 255, .8), 0 1px 8px rgba(31, 44, 80, .08);
+      font-size: 13px;
+    }
+
+    .edge-dot {
+      width: 18px;
+      height: 18px;
+      border-radius: 50%;
+      background:
+        radial-gradient(circle at 55% 62%, #fff 0 13%, transparent 14%),
+        conic-gradient(from 160deg, #17d5a8, #22b5f5, #2964d9, #21b5ef, #17d5a8);
+    }
+
+    .plus {
+      width: 32px;
+      height: 32px;
+      display: grid;
+      place-items: center;
+      border-radius: 5px;
+      color: #4a5668;
+    }
+
+    .plus:hover {
+      background: rgba(255, 255, 255, .72);
+    }
+
+    .toolbar {
+      display: grid;
+      grid-template-columns: auto 1fr auto;
+      align-items: center;
+      gap: 12px;
+      padding: 9px 14px;
+      background: rgba(255, 255, 255, .78);
+      border-bottom: 1px solid var(--line);
+    }
+
+    .nav {
+      display: flex;
+      gap: 4px;
+    }
+
+    .icon-btn {
+      width: 34px;
+      height: 34px;
+      display: grid;
+      place-items: center;
+      border: 0;
+      border-radius: 5px;
+      background: transparent;
+      color: #3d4758;
+      font: inherit;
+      text-decoration: none;
+    }
+
+    .icon-btn:hover {
+      background: #edf2f7;
+    }
+
+    .address {
+      height: 34px;
+      display: flex;
+      align-items: center;
+      gap: 9px;
+      padding: 0 13px;
+      border: 1px solid #d7dfeb;
+      border-radius: 999px;
+      background: #f7fafc;
+      color: #435166;
+      font-size: 13px;
+    }
+
+    .address input {
+      width: 100%;
+    }
+
+    .lock {
+      width: 12px;
+      height: 10px;
+      border: 2px solid #687386;
+      border-radius: 2px;
+      position: relative;
+    }
+
+    .lock::before {
+      content: "";
+      position: absolute;
+      left: 1px;
+      top: -8px;
+      width: 6px;
+      height: 7px;
+      border: 2px solid #687386;
+      border-bottom: 0;
+      border-radius: 7px 7px 0 0;
+    }
+
+    .actions {
+      display: flex;
+      gap: 4px;
+    }
+
+    .page {
+      overflow: auto;
+      padding: 44px;
+    }
+
+    .hero {
+      max-width: 960px;
+      margin: 0 auto 28px;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      margin-bottom: 26px;
+      color: #1d2b45;
+      font-size: 34px;
+      font-weight: 600;
+    }
+
+    .brand .edge-dot {
+      width: 48px;
+      height: 48px;
+    }
+
+    .search {
+      height: 58px;
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      padding: 0 21px;
+      border: 1px solid rgba(208, 218, 231, .95);
+      border-radius: 7px;
+      background: white;
+      box-shadow: 0 18px 40px rgba(31, 44, 80, .1);
+      color: #738096;
+      font-size: 16px;
+    }
+
+    .search input {
+      flex: 1;
+    }
+
+    .search button {
+      height: 34px;
+      padding: 0 16px;
+      border: 0;
+      border-radius: 6px;
+      background: linear-gradient(135deg, #2dd4bf, #2563eb);
+      color: white;
+      cursor: pointer;
+      box-shadow: 0 8px 18px rgba(37, 99, 235, .22);
+    }
+
+    .search button:hover {
+      filter: brightness(1.04);
+    }
+
+    .status {
+      max-width: 960px;
+      min-height: 38px;
+      margin: -12px auto 22px;
+      display: flex;
+      align-items: center;
+      padding: 0 14px;
+      border-radius: 7px;
+      font-size: 13px;
+      opacity: 0;
+      transform: translateY(-4px);
+      transition: opacity .18s ease, transform .18s ease;
+    }
+
+    .status.show {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .status.error {
+      border: 1px solid rgba(220, 38, 38, .22);
+      background: rgba(254, 226, 226, .82);
+      color: #991b1b;
+    }
+
+    .status.ok {
+      border: 1px solid rgba(22, 163, 74, .22);
+      background: rgba(220, 252, 231, .82);
+      color: #166534;
+    }
+
+    .quick-links {
+      max-width: 960px;
+      margin: 0 auto 34px;
+      display: grid;
+      grid-template-columns: repeat(6, 1fr);
+      gap: 14px;
+    }
+
+    .quick {
+      min-height: 86px;
+      display: grid;
+      place-items: center;
+      gap: 8px;
+      padding: 12px 8px;
+      border: 1px solid rgba(213, 222, 235, .9);
+      border-radius: 8px;
+      background: rgba(255, 255, 255, .76);
+      box-shadow: 0 10px 24px rgba(31, 44, 80, .06);
+      font-size: 12px;
+      text-align: center;
+    }
+
+    .quick-icon {
+      width: 34px;
+      height: 34px;
+      display: grid;
+      place-items: center;
+      border-radius: 8px;
+      background: linear-gradient(135deg, #60a5fa, #2563eb);
+      color: white;
+      font-weight: 700;
+    }
+
+    .feed {
+      max-width: 960px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: 1.2fr .8fr;
+      gap: 18px;
+    }
+
+    .history {
+      max-width: 960px;
+      margin: 18px auto 0;
+      padding: 18px;
+      border: 1px solid rgba(213, 222, 235, .9);
+      border-radius: 8px;
+      background: rgba(255, 255, 255, .78);
+      box-shadow: 0 12px 28px rgba(31, 44, 80, .07);
+    }
+
+    .history-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 12px;
+    }
+
+    .history h2 {
+      margin: 0;
+      font-size: 18px;
+      font-weight: 600;
+    }
+
+    .clear {
+      border: 0;
+      border-radius: 5px;
+      background: #eef3f8;
+      color: #536174;
+      padding: 6px 10px;
+      cursor: pointer;
+    }
+
+    .history-list {
+      display: grid;
+      gap: 8px;
+    }
+
+    .history-item {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 10px;
+      align-items: center;
+      padding: 10px 12px;
+      border: 1px solid rgba(224, 231, 241, .9);
+      border-radius: 6px;
+      background: rgba(248, 250, 252, .8);
+      font-size: 13px;
+    }
+
+    .history-item a {
+      color: #1d4ed8;
+      text-decoration: none;
+    }
+
+    .history-meta {
+      color: var(--muted);
+      font-size: 12px;
+    }
+
+    .empty-history {
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.7;
+    }
+
+    .card {
+      min-height: 180px;
+      padding: 22px;
+      border: 1px solid rgba(213, 222, 235, .9);
+      border-radius: 8px;
+      background: rgba(255, 255, 255, .78);
+      box-shadow: 0 12px 28px rgba(31, 44, 80, .07);
+    }
+
+    .card h2 {
+      margin: 0 0 12px;
+      font-size: 20px;
+      font-weight: 600;
+    }
+
+    .card p {
+      margin: 0;
+      color: var(--muted);
+      line-height: 1.8;
+    }
+
+    .back {
+      position: fixed;
+      left: 20px;
+      bottom: 18px;
+      padding: 9px 14px;
+      border-radius: 6px;
+      background: rgba(255, 255, 255, .78);
+      color: #1f3b74;
+      text-decoration: none;
+      box-shadow: 0 10px 24px rgba(31, 44, 80, .12);
+    }
+
+    @media (max-width: 760px) {
+      .browser {
+        width: 100vw;
+        height: 100vh;
+        margin: 0;
+        border-radius: 0;
+      }
+
+      .quick-links,
+      .feed {
+        grid-template-columns: 1fr 1fr;
+      }
+
+      .page {
+        padding: 28px 18px 70px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main class="browser" aria-label="Microsoft Edge mockup">
+    <section class="tabs" aria-label="Tabs">
+      <div class="tab"><span class="edge-dot"></span><span>新建标签页</span></div>
+      <div class="plus">+</div>
+    </section>
+
+    <section class="toolbar" aria-label="Browser toolbar">
+      <div class="nav">
+        <button class="icon-btn" aria-label="Back">‹</button>
+        <button class="icon-btn" aria-label="Forward">›</button>
+        <button class="icon-btn" aria-label="Refresh">↻</button>
+      </div>
+      <form class="address" id="addressForm">
+        <span class="lock"></span>
+        <input id="addressInput" type="text" value="https://www.bing.com/search?q=秦皇岛" aria-label="地址栏">
+      </form>
+      <div class="actions">
+        <button class="icon-btn" aria-label="Favorites">☆</button>
+        <a class="icon-btn" href="browser-history.html" aria-label="History">⏱</a>
+        <button class="icon-btn" aria-label="Profile">◎</button>
+        <button class="icon-btn" aria-label="Menu">···</button>
+      </div>
+    </section>
+
+    <section class="page">
+      <div class="hero">
+        <div class="brand"><span class="edge-dot"></span>Microsoft Edge</div>
+        <form class="search" id="searchForm">
+          <span>⌕</span>
+          <input id="searchInput" type="text" placeholder="搜索网页，或输入网址" aria-label="搜索网页，或输入网址">
+          <button type="submit">搜索</button>
+        </form>
+      </div>
+
+      <div class="status" id="status" role="status" aria-live="polite"></div>
+
+      <div class="quick-links">
+        <div class="quick"><div class="quick-icon">B</div>Bing</div>
+        <div class="quick"><div class="quick-icon">微</div>微信</div>
+        <div class="quick"><div class="quick-icon">云</div>OneDrive</div>
+        <div class="quick"><div class="quick-icon">课</div>学习通</div>
+        <div class="quick"><div class="quick-icon">邮</div>邮箱</div>
+        <div class="quick"><div class="quick-icon">+</div>添加快捷方式</div>
+      </div>
+
+      <div class="feed">
+        <article class="card">
+          <h2>秦皇岛今日</h2>
+          <p>海风、晴天和打开浏览器后的第一条本地信息。这里可以继续接入新闻、搜索结果或你想放的剧情页面。</p>
+        </article>
+        <article class="card">
+          <h2>常用页面</h2>
+          <p>Edge 页面已经作为桌面入口接好；之后可以把地址栏、标签页和网页内容做成更完整的互动版本。</p>
+        </article>
+      </div>
+
+    </section>
+  </main>
+
+  <a class="back" href="win11-desktop.html">返回桌面</a>
+  <script>
+    const keywordRoutes = {
+      // 在这里配置：左边是关键字，右边是要跳转的页面。
+      // 示例：把 "微信": "wechat.html" 改成你自己的关键字和页面也可以。
+      "B站": "https://space.bilibili.com/196192573",
+      "b站": "https://space.bilibili.com/196192573",
+      "bilibili": "https://space.bilibili.com/196192573",
+      "Bilibili": "https://space.bilibili.com/196192573"
+    };
+
+    const searchForm = document.getElementById("searchForm");
+    const addressForm = document.getElementById("addressForm");
+    const searchInput = document.getElementById("searchInput");
+    const addressInput = document.getElementById("addressInput");
+    const statusBox = document.getElementById("status");
+
+    function showStatus(message, type) {
+      statusBox.textContent = message;
+      statusBox.className = `status show ${type}`;
+    }
+
+    function runSearch(rawValue) {
+      const keyword = rawValue.trim();
+      if (!keyword) {
+        showStatus("请输入关键字。", "error");
+        return;
+      }
+
+      const target = keywordRoutes[keyword];
+      if (!target) {
+        showStatus("数据错误：没有找到这个关键字对应的页面。", "error");
+        return;
+      }
+
+      showStatus(`正在打开：${target}`, "ok");
+      setTimeout(() => {
+        window.location.href = target;
+      }, 260);
+    }
+
+    searchForm.addEventListener("submit", (event) => {
+      event.preventDefault();
+      runSearch(searchInput.value);
+    });
+
+    addressForm.addEventListener("submit", (event) => {
+      event.preventDefault();
+      runSearch(addressInput.value);
+    });
+
+  </script>
+</body>
+</html>

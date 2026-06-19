@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <title>Base64——在近期一种爆火的编码方法</title>
+  <style>
+    :root {
+      --text-main: #333333;
+      --text-muted: #576b95; /* 微信经典蓝色链接色 */
+      --text-desc: #b2b2b2;
+      --bg-p: #f6f7f9;
+      font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", "PingFang SC", "Microsoft YaHei", Arial, sans-serif;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background-color: #fff;
+      color: var(--text-main);
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* 文章容器 */
+    .rich-media-container {
+      padding: 20px 16px 40px;
+      max-width: 677px; /* 微信桌面端图文标准最大宽度 */
+      margin: 0 auto;
+    }
+
+    /* 文章大标题 */
+    .article-title {
+      font-size: 22px;
+      font-weight: 600;
+      line-height: 1.4;
+      margin-bottom: 14px;
+      color: #111;
+    }
+
+    /* 元数据栏（作者、公众号信息） */
+    .article-meta {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 8px;
+      font-size: 15px;
+      margin-bottom: 22px;
+      user-select: none;
+    }
+
+    .meta-gzh-name {
+      color: var(--text-muted);
+      font-weight: 500;
+      text-decoration: none;
+    }
+
+    .meta-author {
+      color: rgba(0, 0, 0, 0.5);
+    }
+
+    .meta-time {
+      color: rgba(0, 0, 0, 0.3);
+    }
+
+    /* 正文排版样式 */
+    .article-content {
+      font-size: 16px;
+      color: var(--text-main);
+      text-align: justify; /* 两端对齐 */
+      word-wrap: break-word;
+    }
+
+    /* 段落 */
+    .article-content p {
+      margin-bottom: 1.5em;
+      letter-spacing: 0.03em; /* 稍微拉开字距，更符合阅读习惯 */
+    }
+
+    /* 二级标题 / 小标题 */
+    .article-content h2 {
+      font-size: 18px;
+      font-weight: 600;
+      color: #000;
+      margin: 28px 0 14px;
+      border-left: 4px solid var(--text-muted);
+      padding-left: 8px;
+    }
+
+    /* 引用块 / 引言 */
+    .article-content blockquote {
+      margin: 20px 0;
+      padding: 14px 16px;
+      background-color: var(--bg-p);
+      border-left: 3px solid #cbcbcb;
+      color: #555;
+      font-size: 15px;
+      border-radius: 0 4px 4px 0;
+    }
+
+    /* 图片容器样式 */
+    .article-img-wrapper {
+      margin: 24px 0;
+      text-align: center;
+    }
+
+    .article-img-wrapper img {
+      display: block;
+      max-width: 100%;
+      height: auto;
+      border-radius: 4px;
+      margin: 0 auto;
+    }
+
+    /* 图片说明文字 */
+    .img-caption {
+      display: block;
+      font-size: 12px;
+      color: #888;
+      margin-top: 6px;
+      padding: 0 10px;
+    }
+
+    /* 强调文字 */
+    .highlight {
+      font-weight: 600;
+      color: #000;
+    }
+
+    /* 底部阅读延伸栏 */
+    .article-footer {
+      margin-top: 40px;
+      padding-top: 16px;
+      border-top: 1px solid #eee;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 14px;
+      color: var(--text-muted);
+      user-select: none;
+    }
+
+    .footer-left span {
+      margin-right: 12px;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="rich-media-container">
+    <!-- 1. 文章大标题 -->
+    <h1 class="article-title">
+      <!-- ⬇ 【此处填入：文章大标题】 -->
+      Base64——在近期一种爆火的编码方法
+      <!-- ⬆ 【文章大标题结束】 -->
+    </h1>
+
+    <!-- 2. 作者与公众号信息栏 -->
+    <div class="article-meta">
+      <!-- ⬇ 【此处填入：公众号名称】 -->
+      <a class="meta-gzh-name" href="javascript:void(0);">加密方法大全</a>
+      
+      <!-- ⬇ 【此处填入：作者名字】（如不需要作者，可将整行删除） -->
+      <span class="meta-author">作者：5pu55qKT5p2w</span>
+      
+      <!-- ⬇ 【此处填入：发布时间】 -->
+      <span class="meta-time">2026-06-17 19:30</span>
+    </div>
+
+    <!-- 3. 文章正文区域 -->
+    <div class="article-content">
+      
+      <!-- ⬇ 【段落模板】 -->
+      <p>在这个数据爆炸的时代，你是否曾在聊天软件里收到过一串由大小写字母、数字，甚至还有一两个 == 结尾的神秘代码？<br><br>
+
+别慌，这可不是什么乱码，也不是外星信号。这就是近期在网络上频繁出圈、被无数打工人、程序员和冲浪选手玩出花来的新型数据“接头暗号”——Base64 编码。<br><br>
+
+今天，咱们就来扒一扒这个突然爆火的编码方法，看看它到底是个什么神仙技术，又是怎么火到圈外的。</p>
+      
+      <blockquote>
+        <!-- ⬇ 【引言 / 摘要 / 核心观点框 模板】 -->
+        <h2>🧐 什么是 Base64？它真的能“加密”吗？</h2><br>
+首先，我们要纠正一个最常见的误区：Base64 并不是一种加密算法，而是一种编码方式。<br><br>
+
+用大白话来说：<br><br>
+
+<h3>加密：</h3><br>
+是为了让别人“看不懂”，必须要密钥才能解开。<br><br>
+
+<h3>Base64 编码：</h3><br>
+是为了让机器“看得懂”，它的规则是完全公开的。<br><br>
+        <!-- ⬆ 【引言模块结束】 -->
+      </blockquote>
+
+      <!-- ⬇ 【小标题模板】 -->
+      <h2>💡 原理小科普：</h2><br>
+计算机底层只认识二进制（0和1）。但在网络传输中，有些特殊字符（比如图片数据、特殊符号）在经过不同的路由和系统时，容易被误判或者丢失，导致文件损坏。<br><br>
+
+Base64 的作用，就是从大小写字母<b>（A-Z, a-z）、数字（0-9）、加号（+）和斜杠（/）</b>这 64 个安全字符中，挑出组合来重新表示那些复杂的数据。至于末尾经常出现的 =，其实只是个“补位符”。<br><br>
+
+所以，Base64 更像是一种“方言翻译官”，把大家听不懂的杂音，翻译成全世界计算机都能无障碍阅读的标准普通话。
+
+<h2>🛠️ 如何一键玩转 Base64</h2><br>
+既然这么火，我们普通人该怎么用它来跟朋友“对暗号”呢？
+
+其实你根本不需要懂任何代码，网络上有大把现成的免费工具。只要把文字、链接粘进去，一键就能实现“编码（加密）”和“解码（解密）”。
+
+这里为大家推荐一个全能、安全且界面极其清爽的在线加密/解码网址，不仅支持 Base64，还支持各种真正的进阶加密算法（如 AES, MD5 等）：<br><br>
+
+https://tool.chinaz.com/tools/base64.aspx<br><br>你学会了吗？试着把下面这串神秘代码复制去解码，看看藏着什么秘密吧：
+
+6YKj5rC06JC95LqG5LiA5Lya5LqG77yM5b+D5bCx5Yiw5LqG6IKa6YeM5LqG44CC6YKj5rC06JC95LqG77yM5bCx5LiN5Lya5YaN5aSn5LqG44CCCgrlpKnkuIrmsqHmnInmnaXnmoTmsLTvvIzpgqPlpKnkuIropoHmnaXmsLTvvIzmnKzmnaXlsLHmnInov5nkuYjmt7HnmoTmsLTvvIzlho3ms7zkuobvvIzpgqPkurrov5jog73mtLvnnYDkuoY/Cgrov5nkuI3kuIDokL3vvIzlpKnkuIrkuI3kuIvvvIzpgqPlsLHkuIvkuI3kuIvmnaXigKbigKblk47lkYDvvIzlt67ngrnmiorlkb3mkK3kuIrigKbigKYKCuS6lOeCueWkmuS6hu+8jOi/memHjOi/mOaciei/meS5iOa3seeahOawtOOAggoK5oqK5ZG95L+d5L2P5LqG77yM5oiR5bCx5Zue5Y6755yL5oi/5a2Q44CC55yL6YKj5oi/5a2Q77yM6L+Y56uL552A5ZGi44CC5ZGA77yM55yL5LqG5Lic6Z2i55qE5rC077yM5pyJ5LiD5YWr5bC65rex44CC5Lic6Z2i55qE5rC077yM6L+Y5Y6J5a6z6L+Y5rex44CC5L2g55yL5ZCn77yM6YKj5rC05piv55m955qE44CC5L2g55yL6L+Z5p2R5a2Q5Zyp5LiL5ZCn77yM5omN5LiA5Y2K5LmL5rex55qE5rC05ZWK77yM5L2g56uL5Yiw6L+Z5qW85LiK5bCx5rKh5LqL44CCCgrmiJHlnKjmpbzkuIrvvIzlsLHkuI3mlaLkuIvmnaXvvIzpgqPmsLTlho3mtqjkuoblkaLvvIHotbblm57ljrvkuobvvIznnIvkuobnnIvvvIzlkYDvvIzpgqPmsLTov5jkubHmtYHlkaLjgILlj6/kvaDnnIvlpJrlpKfnmoTmsLTlkaLjgIIKCuWPr+S9oOeci++8jOWkmuWkp+eahOawtOWRouOAggrlj6/kvaDnnIvvvIzlpJrlpKfnmoTmsLTlkaLjgIIK5Y+v5L2g55yL77yM5aSa5aSn55qE5rC05ZGi44CCCuWPr+S9oOeci++8jOWkmuWkp+eahOawtOWRouOAggrlj6/kvaDnnIvvvIzlpJrlpKfnmoTmsLTlkaLjgIIK5Y+v5L2g55yL77yM5aSa5aSn55qE5rC05ZGi44CCCuWPr+S9oOeci++8jOWkmuWkp+eahOawtOWRouOAggrlj6/kvaDnnIvvvIzlpJrlpKfnmoTmsLTlkaLjgIIK5Y+v5L2g55yL77yM5aSa5aSn55qE5rC05ZGi44CCCuWPr+S9oOeci++8jOWkmuWkp+eahOawtOWRouOAggrlj6/kvaDnnIvvvIzlpJrlpKfnmoTmsLTlkaLjgIIK5Y+v5L2g55yL77yM5aSa5aSn55qE5rC05ZGi44CCCuWPr+S9oOeci++8jOWkmuWkp+eahOawtOWRouOAgg==
+
+    <!-- 4. 底部互动栏（阅读、在看、点赞） -->
+    <div class="article-footer">
+      <div class="footer-left">
+        <span>阅读 655</span>
+      </div>
+      <div class="footer-right">
+        <!-- 这里的互动按钮仅作视觉还原 -->
+        <span style="margin-right: 16px; cursor: pointer;">分享</span>
+        <span style="margin-right: 16px; cursor: pointer;">❤ 在看</span>
+        <span style="cursor: pointer;">👍 赞</span>
+      </div>
+    </div>
+  </div>
+
+</body>
+</html>
